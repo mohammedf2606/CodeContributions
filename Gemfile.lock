@@ -136,6 +136,7 @@ GEM
     rake (13.0.1)
     regexp_parser (1.8.2)
     rubyzip (2.3.0)
+    rugged (1.1.0)
     sass-rails (6.0.0)
       sassc-rails (~> 2.1, >= 2.1.1)
     sassc (2.4.0-x64-mingw32)
@@ -198,6 +199,7 @@ DEPENDENCIES
   jbuilder (~> 2.7)
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.4)
+  rugged
   sass-rails (>= 6)
   selenium-webdriver
   sqlite3 (~> 1.4)
