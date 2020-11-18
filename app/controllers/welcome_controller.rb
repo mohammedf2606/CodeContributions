@@ -1,7 +1,6 @@
 class WelcomeController < ApplicationController
   def setup
-    repo = Rugged::Repository.new('D:/GitHub/benchmark-code-contributions')
-    'HELLO' unless repo.empty?
+    g = Git.open('D:/GitHub/benchmark-code-contributions')
+    g.branches
   end
 end
-
