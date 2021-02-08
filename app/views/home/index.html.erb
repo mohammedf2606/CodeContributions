@@ -1,0 +1,72 @@
+<%=
+
+  rev1 = %q(void BanManager::save()
+      {
+        JMutexAutoLock lock(m_mutex);
+        dstream<<"BanManager: saving to "<<m_banfilepath<<std::endl;
+        std::ofstream os(m_banfilepath.c_str(), std::ios::binary);
+
+        if(os.good() == false)
+        {
+            dstream<<"BanManager: failed loading from "<<m_banfilepath<<std::endl;
+            throw SerializationError("BanManager::load(): Couldn't open file");
+        }
+
+        for(std::set<std::string>::iterator
+                i = m_ips.begin();
+                i != m_ips.end(); i++)
+        {
+            if(*i == "")
+                continue;
+            os<<*i<<"\n";
+        }
+        m_modified = false;
+    })
+
+  rev2 = %q(void BanManager::save()
+    {
+        JMutexAutoLock lock();
+        infostream<<"BanManager: saving to "<<m_banfilepath<<std::endl;
+        std::ofstream os(m_banfilepath.c_str(), std::ios::binary);
+
+        if(os.good() == false)
+        {
+            infostream<<"BanManager: failed saving to "<<m_banfilepath<<std::endl;
+            throw SerializationError("BanManager::load(): Couldn't open file");
+        }
+
+        for(std::map<std::string, std::string>::iterator
+                i = m_ips.begin();
+                i != m_ips.end(); i++)
+        {
+            os<<i->first<<"|"<<i->second<<"\n";
+        }
+        m_modified = false;
+    })
+
+  rev3 = %q(void BanManager::save()
+    {
+        JMutexAutoLock lock(m_mutex);
+        infostream<<"BanManager: saving to "<<m_banfilepath<<std::endl;
+        std::ostringstream ss(std::ios_base::binary);
+
+        for(std::map<std::string, std::string>::iterator
+                i = m_ips.begin();
+                i != m_ips.end(); i++)
+        {
+            ss << i->first << "|" << i->second << "\n";
+        }
+
+        if(!fs::safeWriteToFile(m_banfilepath, ss.str())) {
+            infostream<<"BanManager: failed saving to "<<m_banfilepath<<std::endl;
+            throw SerializationError("BanManager::load(): Couldn't write file");
+        }
+
+        m_modified = false;
+    })
+
+  file1 = Contribution.new(rev1, "user1".encode("utf-8"))
+  file1.update(rev2, "user2".encode("utf-8"))
+  file1.update(rev3, "user3".encode("utf-8"))
+  puts file1.calculate_ownership
+%>
