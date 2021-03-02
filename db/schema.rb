@@ -10,6 +10,17 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_01_17_135709) do
+ActiveRecord::Schema.define(version: 2021_03_01_152742) do
+
+  create_table "commits", force: :cascade do |t|
+    t.string "commit_id"
+    t.string "author"
+    t.string "author_email"
+    t.datetime "author_time"
+    t.string "committer"
+    t.string "committer_email"
+    t.datetime "committer_date"
+    t.string "file"
+  end
 
 end

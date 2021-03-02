@@ -1,23 +1,18 @@
-# frozen_string_literal: true
+require 'pp'
 require 'matcher'
 
-class Counter < Hash
-  def update
-
-  end
-end
-
 class Contribution
-
   def initialize(rev, user)
-    init_variables(rev, user)
+    init_variables(rev.to_s, user)
     init_commits(0, rev.length, @new_commit_no)
     move_to_current
   end
 
   def update(rev, user)
-    init_variables(rev, user)
-    matches = calc_line_change(rev)
+    @new_code_text = rev.to_s
+    @new_commit_no = @commit_no + 1
+    @user_index[@new_commit_no] = user
+    matches = calc_line_change(rev.to_s)
 
     pointer = 0
     sort_lambda = ->(l) { l[1] }
@@ -41,11 +36,15 @@ class Contribution
     counts = Hash.new(0)
     sums_persistence = Hash.new(0)
     avg_persistence = Hash.new(0)
-    i = 0 # auxiliary counter
+    # auxiliary counter
+    i = 0
+
+    # inverting scores to get persistence
     persistence = @code.map do |x|
-      @commit_no + 1 - x # inverting scores to get persistence
+      @commit_no + 1 - x
     end
-    @code.each do |x| # self.code and persistence are exactly the same length
+    # self.code and persistence are exactly the same length
+    @code.each do |x|
       if counts.fetch(x, 0).zero?
         counts[x] = 1
       else
@@ -60,14 +59,14 @@ class Contribution
     end
     counts.each do |x|
       if sums_persistence.fetch(@user_index[x], 0).zero?
-        sums_persistence[@user_index[x]] = counts[x]
-        avg_persistence[@user_index[x]] = aggregate[x]
+        sums_persistence[@user_index[x[0]]] = counts[x[0]]
+        avg_persistence[@user_index[x[0]]] = aggregate[x[0]]
       else
-        sums_persistence[@user_index[x]] += counts[x]
-        avg_persistence[@user_index[x]] += aggregate[x]
+        sums_persistence[@user_index[x[0]]] += counts[x]
+        avg_persistence[@user_index[x[0]]] += aggregate[x]
       end
     end
-    avg_persistence.clone.each do |x|
+    avg_persistence.each_key do |x|
       avg_persistence[x] = Math.log(avg_persistence[x] + 1, log_base).round(2)
     end
     [sums_persistence, avg_persistence]
@@ -78,7 +77,7 @@ class Contribution
   def init_variables(rev, user)
     @new_code_text = rev
     @new_code = []
-    @user_index = {}
+    @user_index = Hash.new(0)
     @commit_no = 0
     @new_commit_no = @commit_no + 1
     @user_index[@new_commit_no] = user
@@ -102,7 +101,7 @@ class Contribution
     end
   end
 
-  def calc_line_change(revision, threshold = 0.6)
+  def calc_line_change(revision, threshold = 0.3)
     matches = []
     original = @code_text.lines.map(&:chomp)
     new = revision.lines.map(&:chomp)
@@ -158,7 +157,6 @@ class Contribution
         end
       end
     end
-    puts("Total comparisons: #{counter}")
 
     to_delete = -9999
     while found.eql?(true)
@@ -177,11 +175,11 @@ class Contribution
 
       found = true
       max_match[3].each do |m|
-        next unless m.b != 0
+        next unless m[2] != 0 && m.is_a?(Match)
 
-        matches.append([line_char_original[max_match[0]] + m.a,
-                        line_char_new[max_match[1]] + m.b,
-                        m.size])
+        matches.append([line_char_original[max_match[0]] + m[0],
+                        line_char_new[max_match[1]] + m[1],
+                        m[2]])
       end
       diffs.delete(diffs[max_match[4]])
       to_delete = max_match[1]

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  [id: MyString
+  author: MyString
+  author_email: MyString
+  author_time: 2021-03-01 14:14:05
+  committer: MyString
+  committer_email: MyString
+  committer_date: 
+
+two:
+  [id: MyString
+  author: MyString
+  author_email: MyString
+  author_time: 2021-03-01 14:14:05
+  committer: MyString
+  committer_email: MyString
+  committer_date: 

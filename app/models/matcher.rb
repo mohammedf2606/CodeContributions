@@ -122,7 +122,7 @@ class Matcher
     non_adjacent = []
     matching_blocks.each do |i2, j2, k2|
       # Is this block adjacent to i1, j1, k1?
-      if i1 + k1 == i2 and j1 + k1 == j2
+      if i1 + k1 == i2 && j1 + k1 == j2
         # Yes, so collapse them -- this just increases the length of
         # the first block by the length of the second, and the first
         # block so lengthened remains the block to compare against.
