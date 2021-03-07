@@ -1,5 +1,4 @@
-require 'pp'
-require 'matcher'
+require_relative 'matcher'
 
 class Contribution
   def initialize(rev, user)

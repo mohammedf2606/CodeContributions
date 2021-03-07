@@ -1,0 +1,35 @@
+<div class="container-fluid">
+  <div class="d-flex justify-content-end">
+    <div class="row">
+      <div class="col-sm">
+        <p> <%= @user_name %> </p>
+      </div>
+      <div class="col-sm">
+        <%= image_tag @user_picture, size: "60x60" %>
+      </div>
+    </div>
+  </div>
+  <table class="table table-striped">
+    <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Repo Name</th>
+      <th scope="col">Language</th>
+      <th scope="col">Last updated</th>
+    </tr>
+    </thead>
+    <tbody>
+    <% i = 1 %>
+      <% @repos.each do |repo| %>
+        <tr onclick="location.href='<%= "/repos/" + i.to_s %>'" role=button>
+            <th scope="row"><%= i %></th>
+            <td> <%= repo[:full_name] %> </td>
+            <td> <%= repo[:language] %> </td>
+            <td> <%= repo[:updated_at] %> </td>
+            <% i += 1 %>
+        </tr>
+      <% end %>
+    </tbody>
+
+  </table>
+</div>
