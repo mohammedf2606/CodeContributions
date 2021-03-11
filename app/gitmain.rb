@@ -4,30 +4,29 @@ require_relative 'contribution'
 class GitMain
 
   # Excluding files that are binary
-  FILES_TO_EXCLUDE = %w[png bmp dll jpg jpeg exe ttf ico icns svg ogg].freeze
+  FILES_TO_EXCLUDE = %w[png bmp dll jpg jpeg exe ttf ico icns svg ogg mp3].freeze
 
   def init_client(token)
-    @repo = 'mohammedf2606/benchmark-code-contributions'
     # Change access token depending on repositories to access
     Octokit::Client.new(access_token: token)
   end
 
   def store_revisions(commit_list, file_referenced)
-    existing_commits = Commit.all.select('commit_id')
+    ActiveRecord::Base.logger.level = 1
     commit_list.each do |c|
-      existing_commits.each do |e|
-        next if e[:commit_id].equal?(c[:sha])
-
-        commit = Commit.new(commit_id: c[:sha], author: c[:author][:name],
-                            author_email: c[:author][:email], author_time: c[:author][:date],
-                            committer: c[:committer][:name], committer_email: c[:committer][:email],
-                            committer_date: c[:committer][:date], file: file_referenced)
+      commit = Commit.new(commit_id: c[:sha], author: c[:author][:name],
+                          author_email: c[:author][:email], author_time: c[:author][:date],
+                          file: file_referenced)
+      begin
         commit.save
+      rescue ActiveRecord::RecordNotUnique
+        next
       end
     end
   end
 
-  def pre_process(client)
+  def pre_process(client, repo)
+    @repo = repo
     files = []
     file = client.tree(@repo, 'HEAD', { recursive: 1 })
     file[:tree].each do |i|
@@ -45,11 +44,15 @@ class GitMain
       out = client.commits(@repo, path: current_file)
       commit_list = read_commits(out)
       store_revisions(commit_list, current_file)
-      # Number of commits
       i = 0
+      # Number of commits
       commit_list.reverse.each do |c|
         username = c[:author][:name]
-        file_contents = client.contents(@repo, { path: current_file, ref: c[:sha] })
+        begin
+          file_contents = client.contents(@repo, { path: current_file, ref: c[:sha] })
+        rescue Octokit::NotFound
+          next
+        end
         file = Base64.decode64(file_contents[:content].split.join)
         if i.zero?
           tracking = Contribution.new(file, username)

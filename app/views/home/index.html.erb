@@ -1,17 +1,19 @@
-<div class="container">
-  <div class="row align-items-center">
-    <div class="col-sm-2">
-      <img class="mb-4" src="https://image.flaticon.com/icons/png/512/25/25231.png" alt="" width="72" height="72">
+<div class="container-fluid home align-items-center justify-content-center">
+  <div class="row align-items-center justify-content-center pt-3">
+    <div class="col-sm-2 text-center">
+      <img class="img mb-4" src="https://image.flaticon.com/icons/png/512/25/25231.png" alt="" width="72" height="72">
     </div>
-    <div class="col-sm-8">
-      <h1 class="h3 mb-3">
+    <div class="col-sm-4">
+      <h1 class="h3 text-center">
         Code Contribution Calculator
       </h1>
     </div>
   </div>
-  <div class="row">
-    <%=
-      link_to "Sign in with GitHub", authorize, class: "btn btn-auth btn-github large"
-    %>
+  <div class="row justify-content-center">
+    <div class="col text-center">
+      <%=
+        link_to "Sign in with GitHub", authorize, class: "btn btn-auth btn-github large"
+      %>
+    </div>
   </div>
 </div>

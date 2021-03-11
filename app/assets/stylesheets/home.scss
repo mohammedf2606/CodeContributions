@@ -6,17 +6,21 @@
   src: url("../fonts/Inter/Inter-Regular.ttf");
 }
 
+div[class$="container-fluid home align-items-center justify-content-center"] {
+  margin: 0;
+  background-color: #161b22;
+}
+
+.img {
+  -webkit-filter: invert(1);
+  filter: invert(1);
+}
+
+.h3 {
+  color: #c9d1d9;
+}
+
 body {
-  display: -ms-flexbox;
-  display: -webkit-box;
-  display: flex;
-  -ms-flex-align: center;
-  -ms-flex-pack: center;
-  -webkit-box-align: center;
-  align-items: center;
-  -webkit-box-pack: center;
+  margin: 0;
   justify-content: center;
-  padding-top: 40px;
-  padding-bottom: 40px;
-  background-color: #bfb1b1;
 }

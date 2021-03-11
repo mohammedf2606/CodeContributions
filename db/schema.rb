@@ -10,34 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_03_02_110616) do
+ActiveRecord::Schema.define(version: 2021_03_08_231888) do
 
-  create_table "commits", force: :cascade do |t|
-    t.string "commit_id"
-    t.string "author"
-    t.string "author_email"
-    t.datetime "author_time"
-    t.string "committer"
-    t.string "committer_email"
-    t.datetime "committer_date"
-    t.string "file"
-  end
-
-  create_table "sessions", force: :cascade do |t|
-    t.string "session_id", null: false
-    t.text "data"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["session_id"], name: "index_sessions_on_session_id", unique: true
-    t.index ["updated_at"], name: "index_sessions_on_updated_at"
-  end
-
-  create_table "users", force: :cascade do |t|
-    t.string "username"
-    t.string "email"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.string "uid", limit: 500, default: "", null: false
+  create_table 'commits', id: false, force: :cascade do |t|
+    t.string 'commit_id'
+    t.string 'author'
+    t.string 'author_email'
+    t.datetime 'author_time'
+    t.string 'file'
+    t.index ['commit_id', 'file'], name: 'index_commits_on_commit_id_and_file', unique: true
   end
 
 end

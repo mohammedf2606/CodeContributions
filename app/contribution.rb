@@ -65,9 +65,9 @@ class Contribution
         avg_persistence[@user_index[x[0]]] += aggregate[x]
       end
     end
-    avg_persistence.each_key do |x|
-      avg_persistence[x] = Math.log(avg_persistence[x] + 1, log_base).round(2)
-    end
+    # avg_persistence.each_key do |x|
+    #   avg_persistence[x] = Math.log(avg_persistence[x] + 1, log_base).round(2)
+    # end
     [sums_persistence, avg_persistence]
   end
 
@@ -134,24 +134,25 @@ class Contribution
       diffs.append([])
       if (count[original[x]]).positive?
         y = y_list.index(tmp_new.index(original[x]))
-        diffs[x].append([x, y_list[y], 1.0,
-                         [Match.new(0, 0, original[x].length),
-                          Match.new(original[x].length, original[x].length, 0)]])
-        y_list.delete(y_list[y])
-        tmp_new[tmp_new.index(original[x])] = 0
-        count[original[x]] -= 1
+        begin
+          diffs[x].append([x, y_list[y], 1.0,
+                           [Match.new(0, 0, original[x].length),
+                            Match.new(original[x].length, original[x].length, 0)]])
+          y_list.delete(y_list[y])
+          tmp_new[tmp_new.index(original[x])] = 0
+          count[original[x]] -= 1
+        rescue TypeError
+          next
+        end
       else
         (0..y_list.length - 1).each do |z|
           counter += 1
           line_diff_result = Matcher.new(original[x], new[y_list[z]], false)
+          diffs[x].append([x, y_list[z], line_diff_result.ratio,
+                           line_diff_result.get_matching_blocks])
           if line_diff_result.ratio == 1
-            diffs[x].append([x, y_list[z], line_diff_result.ratio,
-                             line_diff_result.get_matching_blocks])
             y_list.delete(y_list[z])
             break
-          else
-            diffs[x].append([x, y_list[z], line_diff_result.ratio,
-                             line_diff_result.get_matching_blocks])
           end
         end
       end
