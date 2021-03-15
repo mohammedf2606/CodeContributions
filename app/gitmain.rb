@@ -3,26 +3,14 @@ require_relative 'contribution'
 
 class GitMain
 
-  # Excluding files that are binary
-  FILES_TO_EXCLUDE = %w[png bmp dll jpg jpeg exe ttf ico icns svg ogg mp3].freeze
+  # Excluding files that are binary and compiled files*
+  FILES_TO_EXCLUDE = %w[jar png bmp dll jpg jpeg exe ttf ico icns svg ogg mp3 wav bat].freeze
 
   def init_client(token)
     # Change access token depending on repositories to access
-    Octokit::Client.new(access_token: token)
-  end
-
-  def store_revisions(commit_list, file_referenced)
-    ActiveRecord::Base.logger.level = 1
-    commit_list.each do |c|
-      commit = Commit.new(commit_id: c[:sha], author: c[:author][:name],
-                          author_email: c[:author][:email], author_time: c[:author][:date],
-                          file: file_referenced)
-      begin
-        commit.save
-      rescue ActiveRecord::RecordNotUnique
-        next
-      end
-    end
+    client = Octokit::Client.new(access_token: token)
+    pp client.rate_limit
+    client
   end
 
   def pre_process(client, repo)
@@ -37,13 +25,12 @@ class GitMain
   end
 
   def process_git_file(filename, client)
-    filename_list = filename.split('.')
+    filename_list = filename.downcase.split('.')
     unless FILES_TO_EXCLUDE.include?(filename_list[filename_list.length - 1])
       tracking = NilClass
       current_file = filename
       out = client.commits(@repo, path: current_file)
       commit_list = read_commits(out)
-      store_revisions(commit_list, current_file)
       i = 0
       # Number of commits
       commit_list.reverse.each do |c|

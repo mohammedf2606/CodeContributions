@@ -61,6 +61,7 @@ GEM
     bindex (0.8.1)
     bootsnap (1.4.8)
       msgpack (~> 1.0)
+    bootstrap-toggle-rails (2.2.1.0)
     builder (3.2.4)
     byebug (11.1.3)
     capybara (3.33.0)
@@ -111,7 +112,6 @@ GEM
     octokit (4.20.0)
       faraday (>= 0.9)
       sawyer (~> 0.8.0, >= 0.5.3)
-    parallel (1.20.1)
     public_suffix (4.0.6)
     puma (4.3.6)
       nio4r (~> 2.0)
@@ -174,6 +174,8 @@ GEM
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
     sqlite3 (1.4.2)
+    sucker_punch (2.1.2)
+      concurrent-ruby (~> 1.0)
     thor (1.0.1)
     thread_safe (0.3.6)
     tilt (2.0.10)
@@ -209,6 +211,7 @@ PLATFORMS
 
 DEPENDENCIES
   bootsnap (>= 1.4.2)
+  bootstrap-toggle-rails
   byebug
   capybara (>= 2.15)
   chartkick
@@ -216,12 +219,12 @@ DEPENDENCIES
   figaro
   jbuilder (~> 2.7)
   octokit (~> 4.0)
-  parallel
   puma (~> 4.1)
   rails (~> 6.0.3, >= 6.0.3.4)
   sass-rails (>= 6)
   selenium-webdriver
   sqlite3 (~> 1.4)
+  sucker_punch (~> 2.0)
   turbolinks (~> 5)
   tzinfo-data
   web-console (>= 3.3.0)

@@ -1,5 +1,34 @@
+<header class="navbar navbar-dark sticky-top bg-dark">
+  <h2 class="h3 ms-3">Result from <%= @repo_name %></h2>
+</header>
 <div class="container-fluid">
-  <p>
-    <%= @results %>
-  </p>
+  <div class="row">
+    <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-dark sidebar collapse">
+      <div class="position-sticky pt-3">
+        <ul class="nav flex-column">
+          <li class="nav-item">
+            <a class="nav-link" href="javascript: window.location.href = window.location.pathname + '/files';">File View</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="?team=true">Team View</a>
+          </li>
+        </ul>
+      </div>
+    </nav>
+    <div class="col b-3">
+      <h1 class="h3 text-center mb-4">Percentage of characters survived</h1>
+      <% if params[:team].eql? 'true' %>
+        <%= pie_chart @graphs[2], suffix: '%', legend: "bottom" %>
+      <% else %>
+        <%= pie_chart @graphs[0], suffix: '%', legend: "bottom" %>
+      <% end %>
+      <br>
+      <h1 class="h3 text-center mb-4">Persistence score per user</h1>
+      <% if params[:team].eql? 'true' %>
+        <%= column_chart @graphs[3].sort, xtitle: "Contributors", ytitle: "Persistence" %>
+      <% else %>
+        <%= column_chart @graphs[1].sort, xtitle: "Contributors", ytitle: "Persistence" %>
+      <% end %>
+    </div>
+  </div>
 </div>

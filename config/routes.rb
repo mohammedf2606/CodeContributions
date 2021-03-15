@@ -6,6 +6,8 @@ Rails.application.routes.draw do
 
   get '/users/auth/github/callback', to: 'home#callback'
 
-  resources :repos
+  resources :repos do
+    resources :files
+  end
 
 end

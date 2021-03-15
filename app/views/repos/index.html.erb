@@ -1,35 +1,40 @@
 <div class="container-fluid">
-  <div class="d-flex justify-content-end">
-    <div class="row align-content-center">
-      <div class="col-sm">
-        <p> <%= @user_name %> </p>
-      </div>
-      <div class="col-sm">
+  <ul class="nav nav-tabs d-flex flex-row-reverse mb-3 align-items-center">
+    <li class="m-2">
+      <a href=<%= @profile_url %>> <%= @user_name %> </a>
+    </li>
+    <li class="m-2">
+      <a href=<%= @profile_url %>>
         <%= image_tag @user_picture, size: "60x60" %>
-      </div>
-    </div>
-  </div>
-  <table class="table table-dark">
-    <thead>
-    <tr>
-      <th scope="col">#</th>
-      <th scope="col">Repo Name</th>
-      <th scope="col">Language</th>
-      <th scope="col">Last updated</th>
-    </tr>
-    </thead>
-    <tbody>
-    <% i = 1 %>
+      </a>
+    </li>
+    <li class="m-2 flex-fill">
+      <h1 class="h3">Code Contribution Calculator</h1>
+    </li>
+  </ul>
+  <div class="row mx-3">
+    <table class="table table-dark">
+      <thead>
+      <tr>
+        <th scope="col">#</th>
+        <th scope="col">Repo Name</th>
+        <th scope="col">Language</th>
+        <th scope="col">Last updated</th>
+      </tr>
+      </thead>
+      <tbody>
+      <% i = 1 %>
       <% @repos.each do |repo| %>
         <tr onclick="location.href='<%= "/repos/" + i.to_s %>'" role=button>
-            <th scope="row"><%= i %></th>
-            <td class="name"> <%= repo[:full_name] %> </td>
-            <td> <%= repo[:language] %> </td>
-            <td> <%= repo[:updated_at] %> </td>
-            <% i += 1 %>
+          <th scope="row"><%= i %></th>
+          <td class="name"> <%= repo[:full_name] %> </td>
+          <td> <%= repo[:language] %> </td>
+          <td> <%= repo[:updated_at] %> </td>
+          <% i += 1 %>
         </tr>
       <% end %>
-    </tbody>
+      </tbody>
+    </table>
+  </div>
 
-  </table>
 </div>

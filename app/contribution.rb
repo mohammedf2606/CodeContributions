@@ -30,7 +30,7 @@ class Contribution
     move_to_current
   end
 
-  def calculate_ownership(log_base = 10)
+  def calculate_ownership
     aggregate = Hash.new(0)
     counts = Hash.new(0)
     sums_persistence = Hash.new(0)
@@ -65,9 +65,6 @@ class Contribution
         avg_persistence[@user_index[x[0]]] += aggregate[x]
       end
     end
-    # avg_persistence.each_key do |x|
-    #   avg_persistence[x] = Math.log(avg_persistence[x] + 1, log_base).round(2)
-    # end
     [sums_persistence, avg_persistence]
   end
 

@@ -21,10 +21,10 @@ gem 'jbuilder', '~> 2.7'
 gem 'chartkick'
 # Use octokit for GitHub API calls
 gem 'octokit', '~> 4.0'
-
+# Use figaro for environmental variable access
 gem 'figaro'
-
-gem 'parallel'
+# Use sucker_punch for concurrent processing
+gem 'sucker_punch', '~> 2.0'
 # Reduces boot times through caching; required in config/boot.rb
 gem 'bootsnap', '>= 1.4.2', require: false
 
