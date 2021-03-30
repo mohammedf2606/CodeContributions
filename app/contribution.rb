@@ -29,7 +29,6 @@ class Contribution
       init_commits(0, @new_code_text.length - @new_code.length, @new_commit_no)
     end
     move_to_current
-
   end
 
   def calculate_ownership
@@ -69,6 +68,8 @@ class Contribution
     end
     [sums_persistence, avg_persistence]
   end
+
+  private
 
   def init_variables(rev, user)
     @new_code_text = rev
