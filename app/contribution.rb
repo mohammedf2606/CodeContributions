@@ -145,7 +145,7 @@ class Contribution
       else
         (0..y_list.length - 1).each do |z|
           counter += 1
-          line_diff_result = Matcher.new(original[x], new[y_list[z]], false)
+          line_diff_result = Matcher.new(original[x], new[y_list[z]])
           diffs[x].append([x, y_list[z], line_diff_result.ratio,
                            line_diff_result.get_matching_blocks])
           if line_diff_result.ratio == 1

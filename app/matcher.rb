@@ -14,9 +14,8 @@ class Matcher
 
   private :calculate_ratio
 
-  def initialize(a = '', b = '', autojunk = true)
+  def initialize(a = '', b = '')
     @first = @second = nil
-    @autojunk = autojunk
     set_seqs(a, b)
   end
 
@@ -49,7 +48,7 @@ class Matcher
     # Purge popular elements for b that are not junk
     @bpopular = Set[]
     n = @second.length
-    return unless @autojunk && (n >= 200)
+    return unless n >= 200
 
     ntest = n.div(100) + 1
     @b2j.each_pair do |el, ind|
