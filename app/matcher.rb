@@ -34,7 +34,6 @@ class Matcher
     nil if second.eql?(@second)
     @second = second
     @matching_blocks = nil
-    @fullbcount = nil
     chain_b
   end
 
