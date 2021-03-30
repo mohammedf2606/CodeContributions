@@ -2,4 +2,19 @@
   <div class="nav nav-tabs row m-1">
     <h2 class="h3">Files from <%= @repo_name %></h2>
   </div>
+  <div class="row m-2 justify-content-center">
+    <div class="col-lg-6">
+      <ul class="list-group">
+      <% i = 1 %>
+      <% @files.compact.each do |file| %>
+        <a href="<%= './files/' + i.to_s %>"
+           data-turbolinks="false"
+           class="list-group-item list-group-item-action list-group-item-dark">
+          <%= file %>
+        </a>
+        <% i += 1 %>
+      <% end %>
+      </ul>
+    </div>
+  </div>
 </div>

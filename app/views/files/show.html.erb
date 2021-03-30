@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col code" style="float: left">
+      <code>
+        <% html = ''
+          @code.each_with_index do |x, i| %>
+          <% html += case @code_text[i]
+             when "\n" %>
+               <% '<br/>' %>
+             <% when "\r" %>
+               <% '' %>
+             <% when nil %>
+               <% '' %>
+             <% when "\t" %>
+               <% '<span>  </span>' %>
+             <% else %>
+               <% "<span tooltip='%s' class='%s'>%s</span>" %
+                    [@user_index[x], @hashed_users[@user_index[x]], @code_text[i]] %>
+             <% end %>
+        <% end %>
+        <%= raw html %>
+      </code>
+    </div>
+  </div>
+</div>

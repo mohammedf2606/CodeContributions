@@ -13,7 +13,7 @@
     </li>
   </ul>
   <div class="row mx-3">
-    <table class="table table-dark">
+    <table class="table table-dark repos">
       <thead>
       <tr>
         <th scope="col">#</th>
@@ -25,9 +25,13 @@
       <tbody>
       <% i = 1 %>
       <% @repos.each do |repo| %>
-        <tr onclick="location.href='<%= "/repos/" + i.to_s %>'" role=button>
+        <tr>
           <th scope="row"><%= i %></th>
-          <td class="name"> <%= repo[:full_name] %> </td>
+          <td class="name">
+            <a href="<%='/repos/' + i.to_s%>" data-turbolinks="false">
+              <%= repo[:full_name] %>
+            </a>
+          </td>
           <td> <%= repo[:language] %> </td>
           <td> <%= repo[:updated_at] %> </td>
           <% i += 1 %>

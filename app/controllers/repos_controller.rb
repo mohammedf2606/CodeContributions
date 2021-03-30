@@ -3,25 +3,22 @@ require_relative '../gitmain'
 class ReposController < ApplicationController
 
   def index
-    @@git = GitMain.new
-    @@client = @@git.init_client(session[:access_token])
-    pp session[:access_token]
-    @user = @@client.user
+    ReposController.git = GitMain.new
+    ReposController.client = ReposController.git.init_client(session[:access_token])
+    @user = ReposController.client.user
     @profile_url = @user[:html_url]
     @@user_name = @user_name = @user[:name]
     @user_picture = @user[:avatar_url]
-    @@repos = @repos = @@client.repos(access_token: session[:access_token])
+    @@repos = @repos = ReposController.client.repos(access_token: session[:access_token])
   end
 
   def show
     id = params[:id].to_i
-    @@repo_name = @repo_name = @@repos[id - 1][:full_name]
-    @files = @@git.pre_process(@@client, @@repos[id - 1][:full_name])
-    @results = {}
-    @files.each do |file|
-      log = FileJob.new.perform(file, @@git, @@client)
-      @results.store(file.to_s, log)
-    end
+    ReposController.repo_name = @repo_name = @@repos[id - 1][:full_name]
+    @files = ReposController.git.pre_process(ReposController.client, @@repos[id - 1][:full_name])
+    ReposController.results = @results = {}
+    file_processing
+    ReposController.files = @results.compact.keys
     @graphs = generate_graphs(@results)
   end
 
@@ -69,7 +66,20 @@ class ReposController < ApplicationController
     [sum_results, log_results, sum_results_team, log_results_team]
   end
 
-  def self.repo_name
-    @@repo_name
+  # Make getters and setters
+  class << self
+    attr_accessor :repo_name, :files, :results, :client, :git
+  end
+
+  private
+
+  def file_processing
+    @files.each do |file|
+      contribution = ReposController.git.process_git_file(file, ReposController.client)
+      unless contribution.nil?
+        log = contribution.calculate_ownership
+        @results.store(file.to_s, log)
+      end
+    end
   end
 end

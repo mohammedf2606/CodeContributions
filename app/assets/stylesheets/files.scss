@@ -1,3 +1,45 @@
 // Place all the styles related to the files controller here.
 // They will automatically be included in application.css.
 // You can use Sass (SCSS) here: https://sass-lang.com/
+
+[tooltip]:before {
+  content: attr(tooltip);
+  position: absolute;
+  opacity: 0;
+
+  transition: all 0.15s ease;
+  padding: 10px;
+  color: #333;
+  border-radius: 10px;
+  box-shadow: 2px 2px 1px silver;
+}
+
+[tooltip]:hover:before {
+  opacity: 1;
+
+  background: yellow;
+  margin-top: -50px;
+  margin-left: 20px;
+}
+
+[tooltip]:not([tooltip-persistent]):before {
+  pointer-events: none;
+}
+
+span {
+  white-space: pre;
+}
+
+.col.code {
+  margin: 30px;
+  background-color: lightgray;
+  border-radius: 10px;
+}
+
+.table.table-dark {
+  --bs-table-bg: #212529;
+  float: right;
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+}

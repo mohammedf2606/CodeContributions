@@ -2,8 +2,7 @@ require 'octokit'
 require_relative 'contribution'
 
 class GitMain
-
-  # Excluding files that are binary and compiled files*
+  # Excluding files that are binary and compiled files
   FILES_TO_EXCLUDE = %w[jar png bmp dll jpg jpeg exe ttf ico icns svg ogg mp3 wav bat].freeze
 
   def init_client(token)
@@ -48,7 +47,7 @@ class GitMain
         end
         i += 1
       end
-      tracking.calculate_ownership
+      tracking
     end
   end
 

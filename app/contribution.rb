@@ -1,6 +1,7 @@
 require_relative 'matcher'
 
 class Contribution
+
   def initialize(rev, user)
     init_variables(rev.to_s, user)
     init_commits(0, rev.length, @new_commit_no)
@@ -16,18 +17,19 @@ class Contribution
     pointer = 0
     sort_lambda = ->(l) { l[1] }
     matches.sort_by(&sort_lambda)
-    matches.each do |code_block_match|
-      if code_block_match[1] != pointer && code_block_match[1] < @new_code_text.length
-        init_commits(0, code_block_match[1] - pointer, @new_commit_no)
-        pointer += code_block_match[1] - pointer
+    matches.each do |match|
+      if match[1] != pointer && match[1] < @new_code_text.length
+        init_commits(0, match[1] - pointer, @new_commit_no)
+        pointer += match[1] - pointer
       end
-      add_matching_blocks(code_block_match[0], code_block_match[2])
-      pointer += code_block_match[2]
+      add_matching_blocks(match[0], match[2])
+      pointer += match[2]
     end
     if @new_code_text.length > @new_code.length
       init_commits(0, @new_code_text.length - @new_code.length, @new_commit_no)
     end
     move_to_current
+
   end
 
   def calculate_ownership
@@ -67,8 +69,6 @@ class Contribution
     end
     [sums_persistence, avg_persistence]
   end
-
-  private
 
   def init_variables(rev, user)
     @new_code_text = rev
