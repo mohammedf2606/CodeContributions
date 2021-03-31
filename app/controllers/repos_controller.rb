@@ -5,11 +5,15 @@ class ReposController < ApplicationController
   def index
     ReposController.git = GitMain.new
     ReposController.client = ReposController.git.init_client(session[:access_token])
-    @user = ReposController.client.user
-    @profile_url = @user[:html_url]
-    @@user_name = @user_name = @user[:name]
-    @user_picture = @user[:avatar_url]
-    @@repos = @repos = ReposController.client.repos(access_token: session[:access_token])
+    begin
+      @user = ReposController.client.user
+      @profile_url = @user[:html_url]
+      @@user_name = @user_name = @user[:name]
+      @user_picture = @user[:avatar_url]
+      @@repos = @repos = ReposController.client.repos(access_token: session[:access_token])
+    rescue Octokit::Unauthorized
+      redirect_to '/'
+    end
   end
 
   def show
